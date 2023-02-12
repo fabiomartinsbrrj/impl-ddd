@@ -4,37 +4,37 @@ package memory
 
 import (
 	"fmt"
-	"fvm/impl-ddd/aggregate"
-	"fvm/impl-ddd/domain/customer"
+
 	"sync"
 
+	"github.com/fabiomartinsbrrj/tavern/domain/customer"
 	"github.com/google/uuid"
 )
 
 type memoryRepository struct {
-	customers map[uuid.UUID]aggregate.Customer
+	customers map[uuid.UUID]customer.Customer
 	sync.Mutex
 }
 
 func New() *memoryRepository {
 	return &memoryRepository{
-		customers: make(map[uuid.UUID]aggregate.Customer),
+		customers: make(map[uuid.UUID]customer.Customer),
 	}
 }
 
-func (mr *memoryRepository) Get(id uuid.UUID) (aggregate.Customer, error) {
+func (mr *memoryRepository) Get(id uuid.UUID) (customer.Customer, error) {
 
 	if customer, ok := mr.customers[id]; ok {
 		return customer, nil
 	}
 
-	return aggregate.Customer{}, customer.ErrCustomerNotFound
+	return customer.Customer{}, customer.ErrCustomerNotFound
 }
 
-func (mr *memoryRepository) Add(c aggregate.Customer) error {
+func (mr *memoryRepository) Add(c customer.Customer) error {
 	if mr.customers == nil {
 		mr.Lock()
-		mr.customers = make(map[uuid.UUID]aggregate.Customer)
+		mr.customers = make(map[uuid.UUID]customer.Customer)
 		mr.Unlock()
 	}
 	//make sure customer is already in the repository
@@ -48,7 +48,7 @@ func (mr *memoryRepository) Add(c aggregate.Customer) error {
 	return nil
 }
 
-func (mr *memoryRepository) Update(c aggregate.Customer) error {
+func (mr *memoryRepository) Update(c customer.Customer) error {
 	if _, ok := mr.customers[c.GetID()]; !ok {
 		return fmt.Errorf("customer does not exist : %w", customer.ErrUpdateCustomer)
 	}

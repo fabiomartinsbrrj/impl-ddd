@@ -2,7 +2,6 @@ package product
 
 import (
 	"errors"
-	"fvm/impl-ddd/aggregate"
 
 	"github.com/google/uuid"
 )
@@ -12,10 +11,10 @@ var (
 	ErrProductAlreadyExist = errors.New("there is already such an product")
 )
 
-type ProductRepository interface {
-	GetAll() ([]aggregate.Product, error)
-	GetByID(uuid.UUID) (aggregate.Product, error)
-	Add(product aggregate.Product) error
-	Update(product aggregate.Product) error
+type Repository interface {
+	GetAll() ([]Product, error)
+	GetByID(uuid.UUID) (Product, error)
+	Add(product Product) error
+	Update(product Product) error
 	Delete(id uuid.UUID) error
 }

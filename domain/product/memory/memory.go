@@ -1,26 +1,25 @@
 package memory
 
 import (
-	"fvm/impl-ddd/aggregate"
-	"fvm/impl-ddd/domain/product"
 	"sync"
 
+	"github.com/fabiomartinsbrrj/tavern/domain/product"
 	"github.com/google/uuid"
 )
 
 type memoryProductRepository struct {
-	products map[uuid.UUID]aggregate.Product
+	products map[uuid.UUID]product.Product
 	sync.Mutex
 }
 
 func New() *memoryProductRepository {
 	return &memoryProductRepository{
-		products: make(map[uuid.UUID]aggregate.Product),
+		products: make(map[uuid.UUID]product.Product),
 	}
 }
 
-func (mp *memoryProductRepository) GetAll() ([]aggregate.Product, error) {
-	var products []aggregate.Product
+func (mp *memoryProductRepository) GetAll() ([]product.Product, error) {
+	var products []product.Product
 
 	for _, product := range mp.products {
 		products = append(products, product)
@@ -29,15 +28,15 @@ func (mp *memoryProductRepository) GetAll() ([]aggregate.Product, error) {
 	return products, nil
 }
 
-func (mp *memoryProductRepository) GetByID(id uuid.UUID) (aggregate.Product, error) {
+func (mp *memoryProductRepository) GetByID(id uuid.UUID) (product.Product, error) {
 	if product, ok := mp.products[id]; ok {
 		return product, nil
 	}
 
-	return aggregate.Product{}, product.ErrProductNotFound
+	return product.Product{}, product.ErrProductNotFound
 }
 
-func (mp *memoryProductRepository) Add(newprod aggregate.Product) error {
+func (mp *memoryProductRepository) Add(newprod product.Product) error {
 	mp.Lock()
 	defer mp.Unlock()
 
@@ -50,7 +49,7 @@ func (mp *memoryProductRepository) Add(newprod aggregate.Product) error {
 	return nil
 }
 
-func (mp *memoryProductRepository) Update(update aggregate.Product) error {
+func (mp *memoryProductRepository) Update(update product.Product) error {
 	mp.Lock()
 	defer mp.Unlock()
 

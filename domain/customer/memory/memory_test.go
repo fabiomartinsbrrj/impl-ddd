@@ -2,10 +2,10 @@ package memory
 
 import (
 	"errors"
-	"fvm/impl-ddd/aggregate"
-	"fvm/impl-ddd/domain/customer"
+
 	"testing"
 
+	"github.com/fabiomartinsbrrj/tavern/domain/customer"
 	"github.com/google/uuid"
 )
 
@@ -18,7 +18,7 @@ func TestCustomer_GetCustomer(t *testing.T) {
 		expectedErr error
 	}
 
-	cust, err := aggregate.NewCustomer("percy")
+	cust, err := customer.NewCustomer("percy")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func TestCustomer_GetCustomer(t *testing.T) {
 	id := cust.GetID()
 
 	repo := memoryRepository{
-		customers: map[uuid.UUID]aggregate.Customer{
+		customers: map[uuid.UUID]customer.Customer{
 			id: cust,
 		},
 	}

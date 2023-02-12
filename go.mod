@@ -1,4 +1,4 @@
-module fvm/impl-ddd
+module github.com/fabiomartinsbrrj/tavern
 
 go 1.19
 

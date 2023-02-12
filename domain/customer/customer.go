@@ -1,10 +1,9 @@
-package aggregate
+package customer
 
 import (
 	"errors"
-	"fvm/impl-ddd/entity"
-	"fvm/impl-ddd/valueobject"
 
+	"github.com/fabiomartinsbrrj/tavern"
 	"github.com/google/uuid"
 )
 
@@ -17,10 +16,10 @@ var (
 type Customer struct {
 	//person is the root entity of customer
 	//which means person.ID is the main identifier for the customer
-	person   *entity.Person
-	products []*entity.Item
+	person   *tavern.Person
+	products []*tavern.Item
 
-	transactions []valueobject.Transaction
+	transactions []tavern.Transaction
 }
 
 // NewCustomer is a factory to create a new customer aggregate
@@ -30,15 +29,15 @@ func NewCustomer(name string) (Customer, error) {
 		return Customer{}, ErrInvalidPerson
 	}
 
-	person := &entity.Person{
+	person := &tavern.Person{
 		Name: name,
 		ID:   uuid.New(),
 	}
 
 	return Customer{
 		person:       person,
-		products:     make([]*entity.Item, 0),
-		transactions: make([]valueobject.Transaction, 0),
+		products:     make([]*tavern.Item, 0),
+		transactions: make([]tavern.Transaction, 0),
 	}, nil
 }
 
@@ -48,14 +47,14 @@ func (c *Customer) GetID() uuid.UUID {
 
 func (c *Customer) SetID(id uuid.UUID) {
 	if c.person == nil {
-		c.person = &entity.Person{}
+		c.person = &tavern.Person{}
 	}
 	c.person.ID = id
 }
 
 func (c *Customer) SetName(name string) {
 	if c.person == nil {
-		c.person = &entity.Person{}
+		c.person = &tavern.Person{}
 	}
 	c.person.Name = name
 }

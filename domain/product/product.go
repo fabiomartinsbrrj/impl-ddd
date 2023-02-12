@@ -1,9 +1,9 @@
-package aggregate
+package product
 
 import (
 	"errors"
-	"fvm/impl-ddd/entity"
 
+	"github.com/fabiomartinsbrrj/tavern"
 	"github.com/google/uuid"
 )
 
@@ -12,7 +12,7 @@ var (
 )
 
 type Product struct {
-	item     *entity.Item
+	item     *tavern.Item
 	price    float64
 	quantity int
 }
@@ -23,7 +23,7 @@ func NewProduct(name string, description string, price float64) (Product, error)
 	}
 
 	return Product{
-		item: &entity.Item{
+		item: &tavern.Item{
 			ID:          uuid.New(),
 			Name:        name,
 			Description: description,
@@ -37,7 +37,7 @@ func (p *Product) GetID() uuid.UUID {
 	return p.item.ID
 }
 
-func (p *Product) GetItem() *entity.Item {
+func (p *Product) GetItem() *tavern.Item {
 	return p.item
 }
 
